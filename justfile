@@ -35,3 +35,15 @@ uninstall-rust:
         rustup self uninstall -y; \
     fi
     @echo "Rust has been uninstalled."
+
+# Installs Yazi for the current user into ~/.local.
+install-yazi: install-rust
+    @echo "Installing Yazi for $USER..."
+    @cargo install --force --root "$HOME/.local" yazi-build
+    @echo "Yazi installed in $HOME/.local."
+
+# Uninstalls Yazi from the current user's ~/.local installation.
+uninstall-yazi:
+    @echo "Removing Yazi for $USER..."
+    @cargo uninstall --root "$HOME/.local" yazi-build
+    @echo "Yazi has been uninstalled from $HOME/.local."

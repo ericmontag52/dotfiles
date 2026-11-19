@@ -26,6 +26,11 @@ This repository uses `just` to manage a few setup tasks.
 - `just install-rust` installs Rust with `rustup` and sets the default toolchain to `stable`.
 - `just uninstall-rust` removes the Rust toolchain from the machine.
 
+### Yazi file manager
+
+- `just install-yazi` installs Yazi for the current user under `~/.local` (via Cargo).
+- `just uninstall-yazi` removes Yazi from the user's `~/.local` installation.
+
 ### Help
 
 - `just` or `just --list` shows the available commands.
