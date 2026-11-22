@@ -30,6 +30,35 @@ This repository uses `just` to manage a few setup tasks.
 
 - `just install-yazi` installs Yazi for the current user under `~/.local` (via Cargo).
 - `just uninstall-yazi` removes Yazi from the user's `~/.local` installation.
+- Yazi is recommended to be used with **ueberzugpp** for image previews in supported terminals.
+
+### ueberzugpp image previews
+
+- `just install-ueberzugpp` builds ueberzugpp from source and installs it for the current user under `~/.local`.
+- `just uninstall-ueberzugpp` removes ueberzugpp binaries from `~/.local/bin`.
+
+Installing from source requires Git, CMake, and the build dependencies for ueberzugpp. For example, on Debian/Ubuntu:
+
+```bash
+sudo apt-get update && sudo apt-get install -y \
+  build-essential \
+  cmake \
+  extra-cmake-modules \
+  pkg-config \
+  git \
+  libtbb-dev \
+  libssl-dev \
+  libopencv-dev \
+  libvips-dev \
+  libsixel-dev \
+  libchafa-dev \
+  libxcb-image0-dev \
+  libxcb-res0-dev \
+  libx11-dev \
+  libwayland-dev \
+  wayland-protocols
+```
+
 
 ### tmux terminal multiplexer
 

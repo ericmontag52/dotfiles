@@ -72,3 +72,23 @@ uninstall-tmux:
     rm -f "$$HOME/.local/share/man/man1/tmux.1"; \
     rm -f "$$HOME/.local/share/bash-completion/completions/tmux"; \
     echo "tmux has been uninstalled from $$HOME/.local."
+
+# Installs ueberzugpp for the current user into ~/.local by compiling from source.
+install-ueberzugpp:
+    @echo "Installing ueberzugpp for $USER..."
+    @set -euo pipefail; \
+    tmp_dir=$(mktemp -d); \
+    trap 'rm -rf "$tmp_dir"' EXIT; \
+    git clone --depth=1 https://github.com/jstkdng/ueberzugpp.git "$tmp_dir/ueberzugpp"; \
+    cmake -S "$tmp_dir/ueberzugpp" -B "$tmp_dir/ueberzugpp/build" \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX="$HOME/.local"; \
+    cmake --build "$tmp_dir/ueberzugpp/build" -j"$(nproc 2>/dev/null || echo 2)"; \
+    cmake --install "$tmp_dir/ueberzugpp/build"; \
+    echo "ueberzugpp installed in $HOME/.local/bin."
+
+# Removes ueberzugpp from the user's ~/.local installation.
+uninstall-ueberzugpp:
+    @echo "Uninstalling ueberzugpp for $USER..."
+    @rm -f "$HOME/.local/bin/ueberzugpp" "$HOME/.local/bin/ueberzug"
+    @echo "ueberzugpp removed from $HOME/.local/bin."
