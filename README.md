@@ -30,7 +30,16 @@ This repository uses `just` to manage a few setup tasks.
 
 - `just install-yazi` installs Yazi for the current user under `~/.local` (via Cargo).
 - `just uninstall-yazi` removes Yazi from the user's `~/.local` installation.
-- Yazi is recommended to be used with **ueberzugpp** for image previews in supported terminals.
+
+Recommended packages for Yazi image previews on Debian/Ubuntu:
+
+```bash
+sudo apt-get update && sudo apt-get install -y imagemagick
+```
+
+- **ueberzugpp** is recommended for image previews in supported terminals.
+- **Chafa** provides terminal image rendering as text/ANSI graphics.
+- **ImageMagick** provides image conversion and inspection support for preview workflows.
 
 ### ueberzugpp image previews
 
