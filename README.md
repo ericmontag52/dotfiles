@@ -31,6 +31,25 @@ This repository uses `just` to manage a few setup tasks.
 - `just install-yazi` installs Yazi for the current user under `~/.local` (via Cargo).
 - `just uninstall-yazi` removes Yazi from the user's `~/.local` installation.
 
+### tmux terminal multiplexer
+
+- `just install-tmux` builds tmux from source and installs it for the current user under `~/.local`.
+- `just uninstall-tmux` removes the tmux binary and documented completion/manpage files from `~/.local`.
+
+Building from source requires the following `apt` packages on Debian/Ubuntu:
+
+```bash
+sudo apt-get update && sudo apt-get install -y \
+  build-essential \
+  bison \
+  pkg-config \
+  libevent-dev \
+  libncurses-dev \
+  autoconf \
+  automake \
+  git
+```
+
 ### Help
 
 - `just` or `just --list` shows the available commands.

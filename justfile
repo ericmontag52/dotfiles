@@ -47,3 +47,28 @@ uninstall-yazi:
     @echo "Removing Yazi for $USER..."
     @cargo uninstall --root "$HOME/.local" yazi-build
     @echo "Yazi has been uninstalled from $HOME/.local."
+
+tmux_version := "3.5a" # TODO add as part of just recipe
+
+# Installs tmux for the current user into ~/.local by compiling from source.
+install-tmux:
+    @echo "Installing tmux {{tmux_version}} for $USER..."
+    @set -euo pipefail; \
+    tmp_dir=$(mktemp -d); \
+    trap 'rm -rf "$tmp_dir"' EXIT; \
+    curl -fsSL "https://github.com/tmux/tmux/releases/download/{{tmux_version}}/tmux-{{tmux_version}}.tar.gz" -o "$tmp_dir/tmux.tar.gz"; \
+    tar -xzf "$tmp_dir/tmux.tar.gz" -C "$tmp_dir"; \
+    cd "$tmp_dir/tmux-{{tmux_version}}"; \
+    ./configure --prefix="$HOME/.local"; \
+    make -j"$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)"; \
+    make install; \
+    echo "tmux {{tmux_version}} installed in $HOME/.local/bin."
+
+# Uninstalls tmux from the current user's ~/.local installation.
+uninstall-tmux:
+    @echo "Removing tmux for $USER..."
+    @set -e; \
+    rm -f "$$HOME/.local/bin/tmux"; \
+    rm -f "$$HOME/.local/share/man/man1/tmux.1"; \
+    rm -f "$$HOME/.local/share/bash-completion/completions/tmux"; \
+    echo "tmux has been uninstalled from $$HOME/.local."
