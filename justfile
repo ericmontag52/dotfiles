@@ -1,3 +1,6 @@
+chafa_version := "1.18.3" # TODO add as part of just recipe
+tmux_version := "3.5a" # TODO add as part of just recipe
+
 # Default recipe to show available commands
 default:
     @just --list
@@ -48,8 +51,6 @@ uninstall-yazi:
     @cargo uninstall --root "$HOME/.local" yazi-build
     @echo "Yazi has been uninstalled from $HOME/.local."
 
-tmux_version := "3.5a" # TODO add as part of just recipe
-
 # Installs tmux for the current user into ~/.local by compiling from source.
 install-tmux:
     @echo "Installing tmux {{tmux_version}} for $USER..."
@@ -92,3 +93,24 @@ uninstall-ueberzugpp:
     @echo "Uninstalling ueberzugpp for $USER..."
     @rm -f "$HOME/.local/bin/ueberzugpp" "$HOME/.local/bin/ueberzug"
     @echo "ueberzugpp removed from $HOME/.local/bin."
+
+# Installs chafa for the current user into ~/.local by compiling from source.
+install-chafa:
+    @echo "Installing chafa {{chafa_version}} for $USER..."
+    @set -euo pipefail; \
+    tmp_dir=$(mktemp -d); \
+    trap 'rm -rf "$tmp_dir"' EXIT; \
+    curl -fsSL "https://github.com/hpjansson/chafa/releases/download/{{chafa_version}}/chafa-{{chafa_version}}.tar.xz" -o "$tmp_dir/chafa.tar.xz"; \
+    tar -xf "$tmp_dir/chafa.tar.xz" -C "$tmp_dir"; \
+    cd "$tmp_dir/chafa-{{chafa_version}}"; \
+    ./configure --prefix="$HOME/.local"; \
+    make -j"$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)"; \
+    make install; \
+    echo "chafa {{chafa_version}} installed in $HOME/.local/bin."
+
+# Removes chafa from the user's ~/.local installation.
+uninstall-chafa:
+    @echo "Uninstalling chafa for $USER..."
+    @rm -f "$HOME/.local/bin/chafa" "$HOME/.local/lib/libchafa"*
+    @rm -rf "$HOME/.local/include/chafa" "$HOME/.local/lib/pkgconfig/chafa.pc"
+    @echo "chafa removed from $HOME/.local."

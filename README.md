@@ -79,6 +79,34 @@ sudo apt-get update && sudo apt-get install -y \
   git
 ```
 
+### Chafa terminal graphics
+
+- `just install-chafa` builds Chafa from source and installs it for the current user under `~/.local`.
+- `just uninstall-chafa` removes Chafa from `~/.local`.
+
+Building Chafa from source requires the following `apt` packages on Debian/Ubuntu:
+
+```bash
+sudo apt-get update && sudo apt-get install -y \
+  build-essential \
+  pkg-config \
+  git \
+  libglib2.0-dev \
+  libjpeg-dev \
+  libpng-dev \
+  libtiff-dev \
+  libwebp-dev \
+  librsvg2-dev
+```
+
+Optional image format and development support can be added with:
+
+```bash
+sudo apt-get install -y \
+  libavif-dev \
+  libmagickwand-dev
+```
+
 ### Help
 
 - `just` or `just --list` shows the available commands.
