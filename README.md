@@ -116,6 +116,17 @@ sudo apt-get install -y \
   libmagickwand-dev
 ```
 
+### fzf fuzzy finder
+
+- `just install-fzf` downloads fzf for the current user and installs it under `~/.local/bin`.
+- `just uninstall-fzf` removes fzf from `~/.local/bin`.
+
+The fzf recipe requires `curl` and `tar`. On Debian/Ubuntu, install these packages with:
+
+```bash
+sudo apt-get update && sudo apt-get install -y curl tar
+```
+
 ### Help
 
 - `just` or `just --list` shows the available commands.

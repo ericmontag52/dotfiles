@@ -1,5 +1,6 @@
 chafa_version := "1.18.3" # TODO add as part of just recipe
 tmux_version := "3.5a" # TODO add as part of just recipe
+fzf_version := "0.67.0"
 
 # Default recipe to show available commands
 default:
@@ -114,3 +115,27 @@ uninstall-chafa:
     @rm -f "$HOME/.local/bin/chafa" "$HOME/.local/lib/libchafa"*
     @rm -rf "$HOME/.local/include/chafa" "$HOME/.local/lib/pkgconfig/chafa.pc"
     @echo "chafa removed from $HOME/.local."
+
+# Installs fzf for the current user into ~/.local/bin from official releases.
+install-fzf:
+    @echo "Installing fzf {{fzf_version}} for $USER..."
+    @set -euo pipefail; \
+    tmp_dir=$(mktemp -d); \
+    trap 'rm -rf "$tmp_dir"' EXIT; \
+    arch=$(uname -m); \
+    case "$arch" in \
+      x86_64) fzf_arch="linux_amd64" ;; \
+      aarch64|arm64) fzf_arch="linux_arm64" ;; \
+      *) echo "Unsupported architecture: $arch" >&2; exit 1 ;; \
+    esac; \
+    mkdir -p "$HOME/.local/bin"; \
+    curl -fsSL "https://github.com/junegunn/fzf/releases/download/v{{fzf_version}}/fzf-{{fzf_version}}-${fzf_arch}.tar.gz" -o "$tmp_dir/fzf.tar.gz"; \
+    tar -xzf "$tmp_dir/fzf.tar.gz" -C "$HOME/.local/bin" fzf; \
+    chmod +x "$HOME/.local/bin/fzf"; \
+    echo "fzf {{fzf_version}} installed in $HOME/.local/bin."
+
+# Removes fzf from the user's ~/.local/bin installation.
+uninstall-fzf:
+    @echo "Uninstalling fzf for $USER..."
+    @rm -f "$HOME/.local/bin/fzf"
+    @echo "fzf removed from $HOME/.local/bin."
