@@ -139,3 +139,15 @@ uninstall-fzf:
     @echo "Uninstalling fzf for $USER..."
     @rm -f "$HOME/.local/bin/fzf"
     @echo "fzf removed from $HOME/.local/bin."
+
+# Installs the resvg SVG renderer CLI for the current user via Cargo (~/.cargo/bin).
+install-resvg:
+    @echo "Installing resvg for $USER..."
+    @cargo install --locked resvg
+    @echo "resvg installed in $HOME/.cargo/bin."
+
+# Removes resvg from the user's ~/.cargo/bin installation.
+uninstall-resvg:
+    @echo "Uninstalling resvg for $USER..."
+    @cargo uninstall resvg || rm -f "$HOME/.cargo/bin/resvg"
+    @echo "resvg removed from $HOME/.cargo/bin."

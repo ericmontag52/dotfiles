@@ -127,6 +127,17 @@ The fzf recipe requires `curl` and `tar`. On Debian/Ubuntu, install these packag
 sudo apt-get update && sudo apt-get install -y curl tar
 ```
 
+### resvg SVG renderer
+
+- `just install-resvg` installs the resvg SVG renderer CLI for the current user via Cargo under `~/.cargo/bin`.
+- `just uninstall-resvg` removes the resvg CLI from `~/.cargo/bin`.
+
+Installing resvg from source requires Rust and Cargo. The Rust toolchain can be installed with:
+
+```bash
+just install-rust
+```
+
 ### Help
 
 - `just` or `just --list` shows the available commands.
