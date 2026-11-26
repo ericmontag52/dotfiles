@@ -151,3 +151,29 @@ uninstall-resvg:
     @echo "Uninstalling resvg for $USER..."
     @cargo uninstall resvg || rm -f "$HOME/.cargo/bin/resvg"
     @echo "resvg removed from $HOME/.cargo/bin."
+
+zoxide_version := "0.9.9"
+
+# Installs zoxide for the current user into ~/.local/bin from official releases.
+install-zoxide:
+    @echo "Installing zoxide {{zoxide_version}} for $USER..."
+    @set -euo pipefail; \
+    tmp_dir=$(mktemp -d); \
+    trap 'rm -rf "$tmp_dir"' EXIT; \
+    arch=$(uname -m); \
+    case "$arch" in \
+      x86_64) zox_arch="x86_64-unknown-linux-musl" ;; \
+      aarch64|arm64) zox_arch="aarch64-unknown-linux-musl" ;; \
+      *) echo "Unsupported architecture: $arch" >&2; exit 1 ;; \
+    esac; \
+    mkdir -p "$HOME/.local/bin"; \
+    curl -fsSL "https://github.com/ajeetdsouza/zoxide/releases/download/v{{zoxide_version}}/zoxide-{{zoxide_version}}-${zox_arch}.tar.gz" -o "$tmp_dir/zoxide.tar.gz"; \
+    tar -xzf "$tmp_dir/zoxide.tar.gz" -C "$tmp_dir" zoxide; \
+    install -m 0755 "$tmp_dir/zoxide" "$HOME/.local/bin/zoxide"; \
+    echo "zoxide {{zoxide_version}} installed in $HOME/.local/bin."
+
+# Removes zoxide from the user's ~/.local/bin installation.
+uninstall-zoxide:
+    @echo "Uninstalling zoxide for $USER..."
+    @rm -f "$HOME/.local/bin/zoxide"
+    @echo "zoxide removed from $HOME/.local/bin."

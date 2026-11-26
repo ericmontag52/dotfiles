@@ -138,6 +138,13 @@ Installing resvg from source requires Rust and Cargo. The Rust toolchain can be 
 just install-rust
 ```
 
+### zoxide directory jumper
+
+- `just install-zoxide` downloads zoxide 0.9.9 for the detected Linux architecture and installs it under `~/.local/bin`.
+- `just uninstall-zoxide` removes zoxide from `~/.local/bin`.
+
+The recipe requires `curl` and `tar`, and supports x86-64 and ARM64 Linux systems.
+
 ### Help
 
 - `just` or `just --list` shows the available commands.
