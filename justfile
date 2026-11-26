@@ -1,6 +1,8 @@
 chafa_version := "1.18.3" # TODO add as part of just recipe
 tmux_version := "3.5a" # TODO add as part of just recipe
 fzf_version := "0.67.0"
+ripgrep_version := "14.1.1"
+zoxide_version := "0.9.9"
 
 # Default recipe to show available commands
 default:
@@ -152,8 +154,6 @@ uninstall-resvg:
     @cargo uninstall resvg || rm -f "$HOME/.cargo/bin/resvg"
     @echo "resvg removed from $HOME/.cargo/bin."
 
-zoxide_version := "0.9.9"
-
 # Installs zoxide for the current user into ~/.local/bin from official releases.
 install-zoxide:
     @echo "Installing zoxide {{zoxide_version}} for $USER..."
@@ -177,3 +177,27 @@ uninstall-zoxide:
     @echo "Uninstalling zoxide for $USER..."
     @rm -f "$HOME/.local/bin/zoxide"
     @echo "zoxide removed from $HOME/.local/bin."
+
+# Installs ripgrep (rg) for the current user into ~/.local/bin from official releases.
+install-rg:
+    @echo "Installing ripgrep {{ripgrep_version}} for $USER..."
+    @set -euo pipefail; \
+    tmp_dir=$(mktemp -d); \
+    trap 'rm -rf "$tmp_dir"' EXIT; \
+    arch=$(uname -m); \
+    case "$arch" in \
+      x86_64) rg_arch="x86_64-unknown-linux-musl" ;; \
+      aarch64|arm64) rg_arch="aarch64-unknown-linux-musl" ;; \
+      *) echo "Unsupported architecture: $arch" >&2; exit 1 ;; \
+    esac; \
+    mkdir -p "$HOME/.local/bin"; \
+    curl -fsSL "https://github.com/BurntSushi/ripgrep/releases/download/{{ripgrep_version}}/ripgrep-{{ripgrep_version}}-${rg_arch}.tar.gz" -o "$tmp_dir/rg.tar.gz"; \
+    tar -xzf "$tmp_dir/rg.tar.gz" -C "$tmp_dir" --strip-components=1 "ripgrep-{{ripgrep_version}}-${rg_arch}/rg"; \
+    install -m 0755 "$tmp_dir/rg" "$HOME/.local/bin/rg"; \
+    echo "ripgrep {{ripgrep_version}} installed in $HOME/.local/bin."
+
+# Removes ripgrep (rg) from the user's ~/.local/bin installation.
+uninstall-rg:
+    @echo "Uninstalling ripgrep for $USER..."
+    @rm -f "$HOME/.local/bin/rg"
+    @echo "ripgrep removed from $HOME/.local/bin."
