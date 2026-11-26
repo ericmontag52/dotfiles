@@ -34,7 +34,7 @@ This repository uses `just` to manage a few setup tasks.
 Recommended packages for Yazi image previews on Debian/Ubuntu:
 
 ```bash
-sudo apt-get update && sudo apt-get install -y imagemagick 7zip
+sudo apt-get update && sudo apt-get install -y imagemagick 7zip xsel
 ```
 
 - **ueberzugpp** is recommended for image previews in supported terminals.
