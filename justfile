@@ -3,6 +3,7 @@ tmux_version := "3.5a" # TODO add as part of just recipe
 fzf_version := "0.67.0"
 ripgrep_version := "14.1.1"
 zoxide_version := "0.9.9"
+fd_version := "10.5.2"
 
 # Default recipe to show available commands
 default:
@@ -201,3 +202,27 @@ uninstall-rg:
     @echo "Uninstalling ripgrep for $USER..."
     @rm -f "$HOME/.local/bin/rg"
     @echo "ripgrep removed from $HOME/.local/bin."
+
+# Installs fd for the current user into ~/.local/bin from official releases.
+install-fd:
+    @echo "Installing fd {{fd_version}} for $USER..."
+    @set -euo pipefail; \
+    tmp_dir=$(mktemp -d); \
+    trap 'rm -rf "$tmp_dir"' EXIT; \
+    arch=$(uname -m); \
+    case "$arch" in \
+      x86_64) fd_arch="x86_64-unknown-linux-musl" ;; \
+      aarch64|arm64) fd_arch="aarch64-unknown-linux-musl" ;; \
+      *) echo "Unsupported architecture: $arch" >&2; exit 1 ;; \
+    esac; \
+    mkdir -p "$HOME/.local/bin"; \
+    curl -fsSL "https://github.com/sharkdp/fd/releases/download/v{{fd_version}}/fd-v{{fd_version}}-${fd_arch}.tar.gz" -o "$tmp_dir/fd.tar.gz"; \
+    tar -xzf "$tmp_dir/fd.tar.gz" -C "$tmp_dir" --strip-components=1 "fd-v{{fd_version}}-${fd_arch}/fd"; \
+    install -m 0755 "$tmp_dir/fd" "$HOME/.local/bin/fd"; \
+    echo "fd {{fd_version}} installed in $HOME/.local/bin."
+
+# Removes fd from the user's ~/.local/bin installation.
+uninstall-fd:
+    @echo "Uninstalling fd for $USER..."
+    @rm -f "$HOME/.local/bin/fd"
+    @echo "fd removed from $HOME/.local/bin."

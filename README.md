@@ -145,6 +145,13 @@ just install-rust
 
 The recipe requires `curl` and `tar`, and supports x86-64 and ARM64 Linux systems.
 
+### fd file finder
+
+- `just install-fd` downloads fd 10.5.2 for the detected Linux architecture and installs it under `~/.local/bin`.
+- `just uninstall-fd` removes fd from `~/.local/bin`.
+
+The recipe requires `curl` and `tar`, and supports x86-64 and ARM64 Linux systems.
+
 ### Help
 
 - `just` or `just --list` shows the available commands.
